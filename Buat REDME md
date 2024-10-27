@@ -1,0 +1,96 @@
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import './App.css';
+
+// ABI dari Smart Contract (replace dengan ABI contract Anda)
+const contractABI = [
+    // Replace this with your actual contract ABI
+];
+
+const contractAddress = "0xYourContractAddress"; // Ganti dengan alamat kontrak stablecoin Anda
+
+function App() {
+  const [account, setAccount] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [balance, setBalance] = useState("0");
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    // Cek apakah MetaMask terinstall
+    if (window.ethereum) {
+      const tempProvider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(tempProvider);
+    } else {
+      alert('MetaMask not found! Please install MetaMask.');
+    }
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      const accounts = await provider.send("eth_requestAccounts", []);
+      setAccount(accounts[0]);
+      const tempSigner = provider.getSigner();
+      setSigner(tempSigner);
+
+      const tempContract = new ethers.Contract(contractAddress, contractABI, tempSigner);
+      setContract(tempContract);
+
+      const userBalance = await tempContract.balanceOf(accounts[0]);
+      setBalance(ethers.utils.formatUnits(userBalance, 18)); // Menggunakan 18 desimal sesuai dengan token ERC-20
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const buyTokens = async () => {
+    if (!contract || !signer) return;
+
+    try {
+      // Convert input ke Ether (send in Wei)
+      const tx = await signer.sendTransaction({
+        to: contractAddress,
+        value: ethers.utils.parseEther(inputValue)
+      });
+
+      await tx.wait(); // Tunggu konfirmasi transaksi
+
+      // Update saldo setelah pembelian
+      const updatedBalance = await contract.balanceOf(account);
+      setBalance(ethers.utils.formatUnits(updatedBalance, 18));
+      setInputValue(""); // Reset input setelah transaksi
+    } catch (err) {
+      console.error("Error buying tokens:", err);
+    }
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Pi Stablecoin dApp</h1>
+
+        {account ? (
+          <div>
+            <p>Connected account: {account}</p>
+            <p>Your Pi Stablecoin balance: {balance} PSC</p>
+
+            <div>
+              <input
+                type="text"
+                placeholder="Enter ETH amount"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <button onClick={buyTokens}>Buy Pi Stablecoin</button>
+            </div>
+          </div>
+        ) : (
+          <button onClick={connectWallet}>Connect Wallet</button>
+        )}
+      </header>
+    </div>
+  );
+}
+
+export default App;
