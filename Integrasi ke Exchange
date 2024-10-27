@@ -1,0 +1,20 @@
+Langkah-langkah Integrasi:
+
+1. Deploy Smart Contract: Deploy smart contract ke blockchain yang didukung oleh Pi Network.
+
+
+2. Menambahkan Liquidity ke Exchange: Tambahkan likuiditas stablecoin dan ETH (atau mata uang lain) di exchange. Ini memungkinkan pengguna untuk memperdagangkan stablecoin.
+
+
+3. Automasi Harga: Buat skrip backend atau oracle yang memperbarui harga Pi Network secara otomatis. Ini bisa menggunakan API harga dari exchange atau data feed oracle seperti Chainlink.
+
+
+4. Interaksi Melalui Frontend: Buat antarmuka pengguna (dApp) agar orang bisa membeli stablecoin menggunakan wallet seperti MetaMask.
+
+
+
+Untuk exchange integration, beberapa opsi DEX dapat dihubungkan dengan smart contract seperti di atas menggunakan SDK dari Uniswap atau PancakeSwap, tergantung jaringan yang digunakan.
+
+Jika Pi Network belum mendukung EVM, maka solusi ini harus diadaptasi menggunakan platform blockchain yang didukung oleh Pi Network.
+
+Apakah ada detail spesifik lain yang Anda butuhkan, atau Anda ingin memperdalam salah satu aspek
