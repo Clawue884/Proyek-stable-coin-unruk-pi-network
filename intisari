@@ -1,0 +1,17 @@
+Menjalankan Aplikasi
+
+Setelah semua sudah diatur, jalankan aplikasi React:
+
+npm start
+
+Aplikasi ini akan dijalankan pada http://localhost:3000. Ketika pengguna mengunjungi halaman tersebut, mereka akan bisa menghubungkan MetaMask dan membeli Pi Stablecoin.
+
+Keamanan dan Lanjutan
+
+Untuk produksi:
+
+Validasi Input: Pastikan input seperti jumlah ETH yang dimasukkan pengguna sudah divalidasi.
+
+Tampilan yang Lebih Baik: Gunakan library UI seperti Material-UI atau Bootstrap untuk membuat antarmuka lebih menarik.
+
+Keamanan Kontrak: Pastikan smart contract sudah diaudit atau diverifikasi keamanannya sebelum di-deploy ke mainnet.
