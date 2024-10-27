@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract PiStableCoin is ERC20, Ownable {
+    // Harga 1 Pi Network dalam USD (misalnya $314.159)
+    uint256 public piPrice = 314159; // Harga dalam desimal 6
+
+    constructor() ERC20("Pi Stable Coin", "PSC") {
+        // Mint 1 juta token ke deployer (pemilik contract)
+        _mint(msg.sender, 1000000 * 10 ** decimals());
+    }
+
+    // Fungsi untuk memperbarui harga PI oleh pemilik
+    function updatePiPrice(uint256 _newPrice) external onlyOwner {
+        piPrice = _newPrice;
+    }
+
+    // Fungsi untuk membeli stablecoin berdasarkan harga Pi Network
+    function buyPiStableCoin() external payable {
+        require(msg.value > 0, "You need to send some ETH");
+        uint256 amountToMint = (msg.value * 10 ** decimals()) / piPrice;
+        _mint(msg.sender, amountToMint);
+    }
+
+    // Fungsi untuk menarik Ether yang terkumpul dari penjualan
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+}
