@@ -1,0 +1,7 @@
+Setup React Project
+
+Pertama, buat project React baru. Anda bisa menggunakan create-react-app untuk memulai.
+
+npx create-react-app pi-stablecoin-dapp
+cd pi-stablecoin-dapp
+npm install ethers
